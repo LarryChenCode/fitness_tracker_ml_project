@@ -3,15 +3,14 @@
 #  - Key Terminal Commands:
 #
 #    conda deactivate
-#    conda activate tracking-barbell-exercises
-#    conda install --name tracking-barbell-exercises black -y
+#    conda activate nameOfEnvironment
+#    conda install --name nameOfEnvironment black -y
 #
 #    conda env create -f environment.yml
 #    conda env update --file environment.yml --prune
-#    conda env export --name tracking-barbell-exercises > environment.yml
-#    conda env remove --name tracking-barbell-exercises
+#    conda env export --name nameOfEnvironment > environment.yml
+#    conda env remove --name nameOfEnvironment
 #    conda env list
-
 
 
 name: tracking-barbell-exercises

@@ -202,13 +202,13 @@ for s in df_freq["set"].unique():
 
 df_freq = pd.concat(df_freq_list).set_index("epoch (ms)", drop=True)
 
-df_freq.info()
+df_freq.info(verbose=True)
 
 # --------------------------------------------------------------
 # Dealing with overlapping windows
 # --------------------------------------------------------------
 
-df_freq.dropna()
+df_freq = df_freq.dropna()
 
 df_freq = df_freq.iloc[::2]
 
@@ -216,16 +216,16 @@ df_freq = df_freq.iloc[::2]
 # Clustering
 # --------------------------------------------------------------
 
-df_culster = df_freq.copy()
+df_cluster = df_freq.copy()
 
 cluster_columns = ["acc_x", "acc_y", "acc_z"]
 k_values = range(2, 10)
 inertias = []
 
 for k in k_values:
-    subset = df_culster[cluster_columns]
+    subset = df_cluster[cluster_columns]
     kmeans = KMeans(n_clusters=k, n_init=20, random_state=0)
-    culster_labels = kmeans.fit_predict(subset)
+    cluster_labels = kmeans.fit_predict(subset)
     inertias.append(kmeans.inertia_)
 
 plt.figure(figsize=(20, 5))
@@ -235,14 +235,14 @@ plt.ylabel("sum of squared distances")
 plt.show()
 
 kmeans = KMeans(n_clusters=5, n_init=20, random_state=0)
-subset = df_culster[cluster_columns]
-df_culster["culster"] = kmeans.fit_predict(subset)
+subset = df_cluster[cluster_columns]
+df_cluster["cluster"] = kmeans.fit_predict(subset)
 
-# plot culster
+# plot cluster
 fig, ax = plt.subplots(figsize=(15, 15))
 ax = fig.add_subplot(projection="3d")
-for c in df_culster["culster"].unique():
-    subset = df_culster[df_culster["culster"] == c]
+for c in df_cluster["cluster"].unique():
+    subset = df_cluster[df_cluster["cluster"] == c]
     ax.scatter(subset["acc_x"], subset["acc_y"], subset["acc_z"], label=c)
 ax.set_xlabel("X-axis")
 ax.set_ylabel("Y-axis")
@@ -250,11 +250,11 @@ ax.set_zlabel("Z-axis")
 plt.legend()
 plt.show()
 
-# plot culster
+# plot cluster
 fig, ax = plt.subplots(figsize=(15, 15))
 ax = fig.add_subplot(projection="3d")
-for l in df_culster["label"].unique():
-    subset = df_culster[df_culster["label"] == l]
+for l in df_cluster["label"].unique():
+    subset = df_cluster[df_cluster["label"] == l]
     ax.scatter(subset["acc_x"], subset["acc_y"], subset["acc_z"], label=l)
 ax.set_xlabel("X-axis")
 ax.set_ylabel("Y-axis")
@@ -266,4 +266,4 @@ plt.show()
 # Export dataset
 # --------------------------------------------------------------
 
-df_culster.to_pickle("../../data/interim/03_data_feature.pkl")
+df_cluster.to_pickle("../../data/interim/03_data_feature.pkl")
